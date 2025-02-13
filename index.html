@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!-- Font Awesome -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js for charts -->
+    <script>
+        function toggleSidebar() {
+            let sidebar = document.getElementById('sidebar');
+            let mainContent = document.getElementById('main-content');
+            sidebar.classList.toggle('-translate-x-full');
+            mainContent.classList.toggle('md:ml-64');
+        }
+
+        function animateCounter(id, start, end, duration) {
+            let obj = document.getElementById(id);
+            let range = end - start;
+            let current = start;
+            let increment = end > start ? 1 : -1;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            let timer = setInterval(function() {
+                current += increment;
+                obj.textContent = current;
+                if (current == end) {
+                    clearInterval(timer);
+                }
+            }, stepTime);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            animateCounter("total-users", 0, 450, 2000);
+            animateCounter("sales", 0, 350, 2000);
+            animateCounter("new-orders", 0, 58, 2000);
+
+            // Performance Overview Chart
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                    datasets: [{
+                        label: 'Performance Overview',
+                        data: [65, 59, 80, 81, 56, 55],
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-64 bg-gray-800 text-white flex flex-col p-5 space-y-6 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition duration-200 ease-in-out">
+            <h1 class="text-2xl font-bold">Dashboard</h1>
+            <nav>
+                <ul class="space-y-4">
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-700 rounded">Home</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-700 rounded">Analytics</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-700 rounded">Reports</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-700 rounded">Settings</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-700 rounded">Profile</a></li>
+                    <li><a href="#" class="block px-4 py-2 hover:bg-gray-700 rounded">Support</a></li>
+                </ul>
+            </nav>
+            <button class="w-full px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Logout</button>
+        </aside>
+        
+        <!-- Main Content -->
+        <main id="main-content" class="flex-1 p-6 ml-0 md:ml-64 transition-all duration-200">
+            <header class="flex justify-between items-center bg-white p-4 shadow rounded">
+                <button onclick="toggleSidebar()" class="md:hidden px-4 py-2 bg-gray-800 text-white rounded">☰</button>
+                <h2 class="text-xl font-semibold">Dashboard Overview</h2>
+            </header>
+            
+            <!-- Dashboard Cards -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div class="bg-white p-6 rounded shadow text-center">
+                    <h3 class="text-lg font-semibold">Total Users</h3>
+                    <p id="total-users" class="text-2xl font-bold text-blue-600">0</p>
+                </div>
+                <div class="bg-white p-6 rounded shadow text-center">
+                    <h3 class="text-lg font-semibold">Sales</h3>
+                    <p id="sales" class="text-2xl font-bold text-green-600">0</p>
+                </div>
+                <div class="bg-white p-6 rounded shadow text-center">
+                    <h3 class="text-lg font-semibold">New Orders</h3>
+                    <p id="new-orders" class="text-2xl font-bold text-red-600">0</p>
+                </div>
+            </section>
+            
+            <!-- Recent Activities, Notifications, and Performance Overview -->
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-6">
+                <!-- Recent Activities -->
+                <div class="bg-white p-6 rounded shadow">
+                    <h3 class="text-lg font-semibold">Recent Activities</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li class="p-2 bg-gray-100 rounded">User A purchased a product</li>
+                        <li class="p-2 bg-gray-100 rounded">User B updated profile</li>
+                        <li class="p-2 bg-gray-100 rounded">User C left a review</li>
+                    </ul>
+                </div>
+
+                <!-- Notifications -->
+                <div class="bg-white p-6 rounded shadow">
+                    <h3 class="text-lg font-semibold">Notifications</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li class="p-2 bg-yellow-100 rounded">Server maintenance scheduled</li>
+                        <li class="p-2 bg-green-100 rounded">New feature released</li>
+                        <li class="p-2 bg-red-100 rounded">Security alert detected</li>
+                    </ul>
+                </div>
+            </section>
+
+<!-- Recent Transactions -->
+<section class="mt-8">
+    <h2 class="text-xl font-bold">Recent Transactions</h2>
+    <div class="bg-white shadow rounded-lg mt-4 overflow-x-auto">
+        <table class="min-w-full border border-gray-200 table-auto">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="py-3 px-4 border text-left">Date</th>
+                    <th class="py-3 px-4 border text-left">Customer</th>
+                    <th class="py-3 px-4 border text-center">Amount</th>
+                    <th class="py-3 px-4 border text-left">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-3 px-4 border">Feb 12, 2025</td>
+                    <td class="py-3 px-4 border">John Doe</td>
+                    <td class="py-3 px-4 border text-center">$120.50</td>
+                    <td class="py-3 px-4 border text-green-600 font-bold">Completed</td>
+                </tr>
+                <tr class="bg-gray-50 hover:bg-gray-100">
+                    <td class="py-3 px-4 border">Feb 11, 2025</td>
+                    <td class="py-3 px-4 border">Jane Smith</td>
+                    <td class="py-3 px-4 border text-center">$250.00</td>
+                    <td class="py-3 px-4 border text-red-600 font-bold">Pending</td>
+                </tr>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-3 px-4 border">Feb 10, 2025</td>
+                    <td class="py-3 px-4 border">Alice Johnson</td>
+                    <td class="py-3 px-4 border text-center">$75.30</td>
+                    <td class="py-3 px-4 border text-yellow-600 font-bold">In Progress</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+
+
+            <!-- Performance Overview Chart -->
+            <section class="bg-white p-6 rounded shadow mt-6">
+                <h3 class="text-lg font-semibold">Performance Overview</h3>
+                <canvas id="performanceChart" class="mt-4"></canvas>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
